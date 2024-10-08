@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Web</title>
+</head>
+<body>
+    <h1>Calculadora Web</h1>
+    <form id="calculator-form">
+        <label for="a">Número 1:</label>
+        <input type="number" id="a" name="a" required>
+        
+        <label for="b">Número 2:</label>
+        <input type="number" id="b" name="b" required>
+
+        <label for="operation">Operación:</label>
+        <select id="operation" name="operation">
+            <option value="add">Suma</option>
+            <option value="subtract">Resta</option>
+            <option value="multiply">Multiplicación</option>
+            <option value="divide">División</option>
+        </select>
+
+        <button type="submit">Calcular</button>
+    </form>
+
+    <h2>Resultado: <span id="result">---</span></h2>
+
+    <script>
+        document.getElementById('calculator-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const a = document.getElementById('a').value;
+            const b = document.getElementById('b').value;
+            const operation = document.getElementById('operation').value;
+
+            const response = await fetch(`/${operation}?a=${a}&b=${b}`);
+            const data = await response.json();
+
+            if (data.error) {
+                document.getElementById('result').textContent = data.error;
+            } else {
+                document.getElementById('result').textContent = data.result;
+            }
+        });
+    </script>
+</body>
+</html>
